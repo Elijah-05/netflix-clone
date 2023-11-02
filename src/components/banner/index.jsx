@@ -10,6 +10,13 @@ const HomeBanner = ({ api }) => {
   const [bannerData, setBannerData] = useState({});
   const [bannerImage, setBannerImage] = useState("");
 
+  const movieName = bannerData?.name || bannerData?.original_name;
+  const movieDescription =
+    bannerData?.overview?.length > 200
+      ? bannerData?.overview.slice(0, 200) + " ..."
+      : bannerData?.overview;
+
+  //Initially auto fetch and set the banner information to the states
   useEffect(() => {
     const getBannerMovieData = async () => {
       const response = await instance.get(api);
@@ -25,6 +32,7 @@ const HomeBanner = ({ api }) => {
   }, [api]);
 
   return (
+    //Banner component background image set by inline styles
     <div
       className={`relative  h-screen max-h-[520px] `}
       style={{
@@ -36,19 +44,13 @@ const HomeBanner = ({ api }) => {
       <NavBar logo_url={netflix_logo} />
 
       <div className="h-full flex flex-col  justify-center max-w-7xl mx-auto px-4  ">
-        <h1 className="text-white text-3xl font-bold mb-1">
-          {bannerData?.name || bannerData?.original_name}
-        </h1>
+        <h1 className="text-white text-3xl font-bold mb-1">{movieName}</h1>
 
         <div className="flex gap-4">
           <BannerButton label={"Play"} />
           <BannerButton label={"MyList"} />
         </div>
-        <p className="text-white text-sm mt-3 max-w-md">{`${
-          bannerData?.overview?.length > 200
-            ? bannerData?.overview.slice(0, 200) + " ..."
-            : bannerData?.overview
-        }`}</p>
+        <p className="text-white text-sm mt-3 max-w-md">{movieDescription}</p>
       </div>
       <div className=" absolute bottom-0 h-20 w-full bg-gradient-to-t from-black to-[rgba(0,0,0,0)]" />
     </div>

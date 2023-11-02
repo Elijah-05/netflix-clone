@@ -3,13 +3,14 @@ import movieTrailer from "movie-trailer";
 import YouTube from "react-youtube";
 import { instance } from "../../axios/instance";
 import ImageCard from "../image_card/index";
+import CategoryTitle from "../titles/CategoryTitle";
 
 const image_base_url = import.meta.env.VITE_IMAGE_BASE_URL;
 
-const RowScroll = ({ title, api, bigSize }) => {
+const RowScroll = ({ title, api, bigSize, trailerData, setTrailerData }) => {
   const [movieList, setMovieList] = useState([]);
-  const [trailerLink, setTrailerLink] = useState("");
 
+  //Movies are fetched and set to movieList state as an array, later to map list
   useEffect(() => {
     const fetchMovies = async () => {
       const response = await instance.get(api);
@@ -20,27 +21,19 @@ const RowScroll = ({ title, api, bigSize }) => {
   }, [api]);
 
   function handleGetTrailer(movie) {
-    if (trailerLink) {
-      setTrailerLink("");
-    } else {
-      movieTrailer(movie?.title || movie?.original_title)
-        .then((url) => {
-          const urlParams = new URLSearchParams(new URL(url).search);
-          setTrailerLink(urlParams.get("v"));
-        })
-        .catch((err) => console.log("Error retriving movieTrailer: ", err));
-    }
+    movieTrailer(movie?.title || movie?.original_title)
+      .then((url) => {
+        const urlParams = new URLSearchParams(new URL(url).search);
+        trailerData.trailerLink !== urlParams.get("v")
+          ? setTrailerData({ category: api, trailerLink: urlParams.get("v") })
+          : setTrailerData({ category: "", trailerLink: "" });
+      })
+      .catch((err) => console.log("Error retriving movieTrailer: ", err));
   }
 
   return (
     <div className="w-full mb-6 px-4 my-6">
-      <h1
-        className={`pl-2 font-bold ${
-          bigSize ? "uppercase" : "capitalize"
-        } text-2xl text-white`}
-      >
-        {title}
-      </h1>
+      <CategoryTitle title={title} uperCase={bigSize} />
       <div className="px-1 flex items-center overflow-x-scroll overflow-y-visible gap-1  no-scrollbar ">
         {movieList?.map((movie, index) => {
           return (
@@ -59,11 +52,12 @@ const RowScroll = ({ title, api, bigSize }) => {
       </div>
 
       {/* Trailer Component */}
-      {trailerLink && (
+      {trailerData?.category === api && (
         <YouTube
-          videoId={trailerLink}
+          className="mb-10"
+          videoId={trailerData?.trailerLink}
           opts={{
-            height: "250px",
+            height: "450px",
             width: "100%",
             playerVars: { autoplay: 1 },
           }}
