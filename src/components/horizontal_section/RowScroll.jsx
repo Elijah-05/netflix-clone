@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { instance } from "../axios/instance";
-import ImageCard from "./image_card";
 import movieTrailer from "movie-trailer";
 import YouTube from "react-youtube";
+import { instance } from "../../axios/instance";
+import ImageCard from "../image_card/index";
 
 const image_base_url = import.meta.env.VITE_IMAGE_BASE_URL;
 
 const RowScroll = ({ title, api, bigSize }) => {
   const [movieList, setMovieList] = useState([]);
   const [trailerLink, setTrailerLink] = useState("");
-
-  console.log("movieList: ", movieList);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -22,11 +20,6 @@ const RowScroll = ({ title, api, bigSize }) => {
   }, [api]);
 
   function handleGetTrailer(movie) {
-    console.log(
-      "Handle Get Trailer Triggered!",
-      movie?.title,
-      movie?.original_title
-    );
     if (trailerLink) {
       setTrailerLink("");
     } else {
@@ -39,12 +32,10 @@ const RowScroll = ({ title, api, bigSize }) => {
     }
   }
 
-  console.log("movieTrailerLink: ", trailerLink);
-
   return (
-    <div className="w-full mb-2 p-2">
+    <div className="w-full mb-6 px-4 my-6">
       <h1
-        className={` font-bold ${
+        className={`pl-2 font-bold ${
           bigSize ? "uppercase" : "capitalize"
         } text-2xl text-white`}
       >
@@ -60,22 +51,23 @@ const RowScroll = ({ title, api, bigSize }) => {
               }
               image_alt={movie.title}
               onClick={() => handleGetTrailer(movie)}
+              bigSize={bigSize}
               key={movie.poster_path}
             />
           );
         })}
       </div>
+
+      {/* Trailer Component */}
       {trailerLink && (
-        <div className="border-2 border-red-500">
-          <YouTube
-            videoId={trailerLink}
-            opts={{
-              height: "250px",
-              width: "100%",
-              playerVars: { autoplay: 1 },
-            }}
-          />
-        </div>
+        <YouTube
+          videoId={trailerLink}
+          opts={{
+            height: "250px",
+            width: "100%",
+            playerVars: { autoplay: 1 },
+          }}
+        />
       )}
     </div>
   );

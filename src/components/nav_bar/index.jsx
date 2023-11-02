@@ -5,27 +5,31 @@ const NavBar = ({ logo_url, user_icon }) => {
   const [transaparent, setTransparent] = useState(true);
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 300) {
-        console.log("Window: ", window.scrollY);
+    const handleScroll = () => {
+      if (window.scrollY > 80) {
         setTransparent(false);
-      } else setTransparent(true);
-    });
-
+      } else {
+        setTransparent(true);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", window);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
     <div
-      className={`fixed flex justify-between items-center top-0 w-full max-w-5xl ${
-        !transaparent &&
-        " bg-gradient-to-b from-black from-60% to-100% to-[rgba(0,0,0,0)]"
-      } z-50 px-6 py-4 duration-500`}
+      className={`fixed w-full top-0  ${
+        transaparent
+          ? "bg-transparent"
+          : " bg-gradient-to-b from-[rgba(0,0,0,0.9)] from-80% to-100% to-[rgba(0,0,0,0)]"
+      } z-50 px-6 py-6 duration-1000`}
     >
-      <img className="w-20" src={logo_url} alt="nexflix logo" />
-      <img className="w-8" src={userIcon} alt="nexflix user icon" />
+      <div className="flex max-w-7xl mx-auto justify-between">
+        <img className="w-20" src={logo_url} alt="nexflix logo" />
+        <img className="w-8" src={userIcon} alt="nexflix user icon" />
+      </div>
     </div>
   );
 };

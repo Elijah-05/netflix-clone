@@ -26,7 +26,7 @@ const HomeBanner = ({ api }) => {
 
   return (
     <div
-      className={`relative  h-screen max-h-96 `}
+      className={`relative  h-screen max-h-[520px] `}
       style={{
         backgroundImage: `url(${bannerImage})`,
         backgroundPosition: "center",
@@ -35,22 +35,20 @@ const HomeBanner = ({ api }) => {
     >
       <NavBar logo_url={netflix_logo} />
 
-      <div className="pl-6 h-full flex flex-col  justify-center  max-w-md  ">
-        <div className="relative p-4 ">
-          <h1 className="text-white text-2xl font-bold mb-1">
-            {bannerData?.name || bannerData?.original_name}
-          </h1>
+      <div className="h-full flex flex-col  justify-center max-w-7xl mx-auto px-4  ">
+        <h1 className="text-white text-3xl font-bold mb-1">
+          {bannerData?.name || bannerData?.original_name}
+        </h1>
 
-          <div className="flex gap-4">
-            <BannerButton label={"Play"} />
-            <BannerButton label={"MyList"} />
-          </div>
-          <p className="text-white text-sm mt-3">{`${
-            bannerData?.overview?.length > 200
-              ? bannerData?.overview.slice(0, 200) + " ..."
-              : bannerData?.overview
-          }`}</p>
+        <div className="flex gap-4">
+          <BannerButton label={"Play"} />
+          <BannerButton label={"MyList"} />
         </div>
+        <p className="text-white text-sm mt-3 max-w-md">{`${
+          bannerData?.overview?.length > 200
+            ? bannerData?.overview.slice(0, 200) + " ..."
+            : bannerData?.overview
+        }`}</p>
       </div>
       <div className=" absolute bottom-0 h-20 w-full bg-gradient-to-t from-black to-[rgba(0,0,0,0)]" />
     </div>
