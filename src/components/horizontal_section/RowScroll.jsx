@@ -32,7 +32,7 @@ const RowScroll = ({ title, api, bigSize, trailerData, setTrailerData }) => {
   }
 
   return (
-    <div className="w-full mb-6 px-4 my-6">
+    <div className="w-full max-w-[1450px] mx-auto mb-6 px-4 my-6">
       <CategoryTitle title={title} uperCase={bigSize} />
       <div className="px-1 flex items-center overflow-x-scroll overflow-y-visible gap-1  no-scrollbar ">
         {movieList?.map((movie, index) => {

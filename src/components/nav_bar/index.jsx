@@ -21,10 +21,8 @@ const NavBar = ({ logo_url, user_icon }) => {
   return (
     <div
       className={`fixed w-full top-0  ${
-        transaparent
-          ? "bg-transparent"
-          : " bg-gradient-to-b from-[rgba(0,0,0,0.9)] from-80% to-100% to-[rgba(0,0,0,0)]"
-      } z-50 px-6 py-6 duration-1000`}
+        transaparent ? "bg-transparent" : " bg-[rgba(0,0,0,0.9)]"
+      } z-50 px-6 py-4 duration-1000`}
     >
       <div className="flex max-w-7xl mx-auto justify-between">
         <img className="w-20" src={logo_url} alt="nexflix logo" />
